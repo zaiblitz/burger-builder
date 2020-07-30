@@ -1,0 +1,20 @@
+## implement css module by running `npm run eject`
+ add this under options
+    modules: true,
+    localIdentName: '[name]__[local]__[hash:base64:5]'
+ in config/webpack.config.dev.js and config/webpack.config.prod.js in options   
+
+
+## get embed fonts from google fonts 
+ link : https://fonts.google.com/
+ e.g (using open sans)
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,300&display=swap" rel="stylesheet">
+
+  in index.css add this
+  body {
+    font-family: "Open Sans", sans-serif;
+  }
+
+
+## install prop types
+npm install --save prop-types

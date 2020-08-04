@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import Aux from '../../hoc/Aux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import Spinner from '../../components/Spinner/Spinner';
+
 
 const INGREDIENT_PRICES = {
   salad: 1,
@@ -24,7 +27,8 @@ class BurgerBuilder extends Component {
      },
      totalPrice : 4,
      purchasable: false,
-     purchasing: false
+     purchasing: false,
+     loading: false
   }
 
   updatePurchaseState(ingredients) {
@@ -105,7 +109,32 @@ class BurgerBuilder extends Component {
   }
 
   purchaseContinueHandler = (props) => {
-    alert('continue');
+    //alert('continue');
+
+    this.setState({loading: true});
+
+    const order = {
+      ingredients: this.state.ingredients,
+      price: this.state.totalPrice,
+      customer: {
+        name: 'Merwin Dale',
+        address: {
+          street: 'Mandaluyong City',
+          zipCode: '41351',
+          country: 'Philippinhes'
+        },
+        email: 'merwindale.domingo@gmail.com'
+      },
+      deliveryMethod: 'COD'
+    }
+
+    axios.post('https://react-my-burger-e66ea.firebaseio.com/orders.json', order)
+      .then(response => {
+        this.setState({loading: false, purchasing: false});
+      })
+      .catch(error => {
+        this.setState({loading: false, purchasing: false});
+      });
   }
 
   render() {
@@ -117,31 +146,21 @@ class BurgerBuilder extends Component {
       disabled[ingredientKey] = ingredients[ingredientKey] <= 0;
     }
 
+    let orderSummary = <OrderSummary 
+      ingredients={this.state.ingredients}
+      purchaseCancelled={this.purchaseCancelHandler}
+      purchaseContinued={this.purchaseContinueHandler}
+      price={this.state.totalPrice.toFixed(2)}
+    />
 
-    // const orders = [
-    //   {userid:1, amount:20},
-    //   {userid:1, amount:5},
-    //   {userid:5, amount:38},
-    //   {userid:7, amount:30}
-    // ];
-
-    // const merOrder = orders.filter(order => {
-    //   return order.userid === 1
-    // }).map(order => {
-    //   return order.amount
-    // }).reduce((num1, num2) => num1 + num2 );
-
-    // console.log(merOrder);
+    if(this.state.loading) {
+      orderSummary = <Spinner />
+    }
 
     return (
       <Aux>
           <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
-            <OrderSummary 
-              ingredients={this.state.ingredients}
-              purchaseCancelled={this.purchaseCancelHandler}
-              purchaseContinued={this.purchaseContinueHandler}
-              price={this.state.totalPrice.toFixed(2)}
-            />
+            {orderSummary}
           </Modal>
         <div>
           <Burger ingredients={this.state.ingredients}/>

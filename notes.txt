@@ -1,8 +1,9 @@
+## no. 73
 ## implement css module by running `npm run eject`
- add this under options
+ add this under options (search .css)
     modules: true,
     localIdentName: '[name]__[local]__[hash:base64:5]'
- in config/webpack.config.dev.js and config/webpack.config.prod.js in options   
+ in config/webpack.config.dev.js and config/webpack.config.prod.js INSIDE options   
 
 
 ## get embed fonts from google fonts 
@@ -15,6 +16,21 @@
     font-family: "Open Sans", sans-serif;
   }
 
-
 ## install prop types
 npm install --save prop-types
+
+
+const orders = [
+  {userid:1, amount:20},
+  {userid:1, amount:5},
+  {userid:5, amount:38},
+  {userid:7, amount:30}
+];
+
+const merOrder = orders.filter(order => {
+  return order.userid === 1
+}).map(order => {
+  return order.amount
+}).reduce((num1, num2) => num1 + num2 );
+
+console.log(merOrder);

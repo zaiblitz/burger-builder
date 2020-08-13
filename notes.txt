@@ -1,3 +1,5 @@
+## vscode https://medium.com/better-programming/20-vs-code-shortcuts-for-fast-coding-cheatsheet-10b0e72fd5d
+
 ## no. 73
 ## implement css module by running `npm run eject`
  add this under options (search .css)

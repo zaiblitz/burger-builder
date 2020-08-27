@@ -36,3 +36,13 @@ const merOrder = orders.filter(order => {
 }).reduce((num1, num2) => num1 + num2 );
 
 console.log(merOrder);
+
+
+ componentDidMount() {
+        const query = new URLSearchParams(this.props.location.search); // get url params
+        const ingredients = {};
+        for (let param of query.entries()) {
+            ingredients[param[0]] = +param[1]; // loop params
+        }
+        this.setState({ingredients: ingredients});
+}
